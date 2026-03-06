@@ -1,7 +1,6 @@
 package com.sunflower.service;
 
 import com.sunflower.dto.CategoryDTO;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,4 +15,6 @@ public interface CategoryService {
     void deleteCategory(Long categoryId);
 
     CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO);
+
+    CategoryDTO getCategoryByName(String categoryName);
 }

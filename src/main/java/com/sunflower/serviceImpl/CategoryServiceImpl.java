@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -33,6 +32,19 @@ public class CategoryServiceImpl implements CategoryService {
                 .stream()
                 .map(category -> modelMapper.map(category, CategoryDTO.class))
                 .toList();
+    }
+
+    // get category by name
+    @Override
+    public CategoryDTO getCategoryByName(String categoryName) {
+
+        Category category = categoryRepository
+                .findByCategoryName(categoryName)
+                .orElseThrow(() ->
+                        new CategoryNotFoundException("Category not found with name: " + categoryName)
+                );
+
+        return modelMapper.map(category, CategoryDTO.class);
     }
 
     // saving category
@@ -79,5 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return modelMapper.map(savedCategory, CategoryDTO.class);
     }
+
+
 }
 

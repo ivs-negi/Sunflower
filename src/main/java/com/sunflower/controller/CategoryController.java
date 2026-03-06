@@ -24,6 +24,15 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.FOUND).body(categoryList);
     }
 
+    // get category by name
+    @GetMapping("/admin/category/name/{categoryName}")
+    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String categoryName) {
+
+        CategoryDTO categoryDTO = categoryService.getCategoryByName(categoryName);
+
+        return ResponseEntity.ok(categoryDTO);
+    }
+
     // create category
     @PostMapping("/admin/category")
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
