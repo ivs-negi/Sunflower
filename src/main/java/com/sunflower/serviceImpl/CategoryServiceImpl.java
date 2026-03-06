@@ -47,6 +47,23 @@ public class CategoryServiceImpl implements CategoryService {
         return modelMapper.map(category, CategoryDTO.class);
     }
 
+    // get category by keyword
+    @Override
+    public List<CategoryDTO> searchCategoryByKeyword(String keyword) {
+
+        List<Category> categories =
+                categoryRepository.findByCategoryNameContainingIgnoreCase(keyword);
+
+        if (categories.isEmpty()) {
+            throw new CategoryNotFoundException("No category found with keyword: " + keyword);
+        }
+
+        return categories
+                .stream()
+                .map(category -> modelMapper.map(category, CategoryDTO.class))
+                .toList();
+    }
+
     // saving category
     @Override
     public CategoryDTO saveCategory(CategoryDTO categoryDTO) {

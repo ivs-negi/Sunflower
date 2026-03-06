@@ -17,4 +17,6 @@ public interface CategoryService {
     CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO);
 
     CategoryDTO getCategoryByName(String categoryName);
+
+    List<CategoryDTO> searchCategoryByKeyword(String keyword);
 }

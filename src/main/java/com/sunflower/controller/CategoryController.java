@@ -18,19 +18,29 @@ public class CategoryController {
 
 
     // get all categories
-    @GetMapping("/public/categories")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getAllcategories(){
         List<CategoryDTO> categoryList = categoryService.getAllCategory();
         return ResponseEntity.status(HttpStatus.FOUND).body(categoryList);
     }
 
     // get category by name
-    @GetMapping("/admin/category/name/{categoryName}")
+    @GetMapping("category/name/{categoryName}")
     public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String categoryName) {
 
         CategoryDTO categoryDTO = categoryService.getCategoryByName(categoryName);
 
         return ResponseEntity.ok(categoryDTO);
+    }
+
+    //  get category by keyword
+    @GetMapping("/categories/search")
+    public ResponseEntity<List<CategoryDTO>> searchCategoryByKeyword(
+            @RequestParam String keyword) {
+
+        List<CategoryDTO> categories = categoryService.searchCategoryByKeyword(keyword);
+
+        return ResponseEntity.ok(categories);
     }
 
     // create category
