@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
         response.put("timestamp", LocalDateTime.now());
         response.put("message", ex.getMessage());
         response.put("status", HttpStatus.NOT_FOUND.value());
-        response.put("error", "Category does not Exists");
+        response.put("error", "Category not found");
 
         return new ResponseEntity<>(response,HttpStatus.CONFLICT);
     }
