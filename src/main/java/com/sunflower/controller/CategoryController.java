@@ -4,7 +4,6 @@ import com.sunflower.dto.CategoryDTO;
 import com.sunflower.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ public class CategoryController {
     // get all categories
 
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDTO>> getAllcategories(){
+    public ResponseEntity<List<CategoryDTO>> getAllCategories(){
 
         List<CategoryDTO> categoryList = categoryService.getAllCategory();
 
