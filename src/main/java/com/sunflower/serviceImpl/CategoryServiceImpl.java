@@ -26,6 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     // get all categories
     @Override
     public List<CategoryDTO> getAllCategory() {
+
         List<Category> categories = categoryRepository.findAll();
 
         return categories
@@ -44,7 +45,9 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         Category category = modelMapper.map(categoryDTO, Category.class);
+
         Category savedCategory = categoryRepository.save(category);
+
         return modelMapper.map(savedCategory, CategoryDTO.class);
     }
 

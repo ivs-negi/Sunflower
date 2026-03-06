@@ -11,9 +11,9 @@ public interface CategoryService {
 
     List<CategoryDTO> getAllCategory();
 
-    CategoryDTO saveCategory(@Valid CategoryDTO categoryDTO);
+    CategoryDTO saveCategory(CategoryDTO categoryDTO);
 
     void deleteCategory(Long categoryId);
 
-    CategoryDTO updateCategory(Long categoryId, @Valid CategoryDTO categoryDTO);
+    CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO);
 }
