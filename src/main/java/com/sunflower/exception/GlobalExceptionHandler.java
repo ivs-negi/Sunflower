@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", ex.getMessage());
-        response.put("status", HttpStatus.CONFLICT.value());
+        response.put("status", HttpStatus.CONFLICT);
         response.put("error", "Category Already Exists");
 
         return new ResponseEntity<>(response,HttpStatus.CONFLICT);
@@ -54,10 +54,10 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", ex.getMessage());
-        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("status", HttpStatus.NOT_FOUND);
         response.put("error", "Category not found");
 
-        return new ResponseEntity<>(response,HttpStatus.CONFLICT);
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
 
 }
