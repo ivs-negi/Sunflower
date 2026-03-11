@@ -1,7 +1,7 @@
 package com.sunflower.controller;
 
-import com.sunflower.dto.CategoryRequest;
-import com.sunflower.dto.CategoryResponse;
+import com.sunflower.requestDTO.CategoryRequest;
+import com.sunflower.responseDTO.CategoryResponse;
 import com.sunflower.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

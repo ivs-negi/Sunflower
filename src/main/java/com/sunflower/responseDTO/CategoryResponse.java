@@ -1,4 +1,4 @@
-package com.sunflower.dto;
+package com.sunflower.responseDTO;
 
 import lombok.Data;
 

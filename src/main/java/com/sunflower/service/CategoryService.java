@@ -1,7 +1,7 @@
 package com.sunflower.service;
 
-import com.sunflower.dto.CategoryRequest;
-import com.sunflower.dto.CategoryResponse;
+import com.sunflower.requestDTO.CategoryRequest;
+import com.sunflower.responseDTO.CategoryResponse;
 import java.util.List;
 
 public interface CategoryService {

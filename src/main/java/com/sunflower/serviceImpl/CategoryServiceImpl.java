@@ -1,7 +1,7 @@
 package com.sunflower.serviceImpl;
 
-import com.sunflower.dto.CategoryRequest;
-import com.sunflower.dto.CategoryResponse;
+import com.sunflower.requestDTO.CategoryRequest;
+import com.sunflower.responseDTO.CategoryResponse;
 import com.sunflower.exception.CategoryNotFoundException;
 import com.sunflower.exception.NameAlreadyExistsException;
 import com.sunflower.model.Category;
