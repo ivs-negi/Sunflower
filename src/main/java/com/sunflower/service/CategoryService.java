@@ -1,6 +1,6 @@
 package com.sunflower.service;
 
-import com.sunflower.model.Category;
+import com.sunflower.dto.CategoryDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -8,7 +8,15 @@ import java.util.List;
 @Component
 public interface CategoryService {
 
-    Category createCategory(Category category);
+    List<CategoryDTO> getAllCategory();
 
-    List<Category> getAllCategory();
+    CategoryDTO saveCategory(CategoryDTO categoryDTO);
+
+    void deleteCategory(Long categoryId);
+
+    CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO);
+
+    CategoryDTO getCategoryByName(String categoryName);
+
+    List<CategoryDTO> searchCategoryByKeyword(String keyword);
 }

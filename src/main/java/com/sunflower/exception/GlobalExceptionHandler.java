@@ -2,7 +2,6 @@ package com.sunflower.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -43,7 +41,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", ex.getMessage());
-        response.put("status", HttpStatus.CONFLICT.value());
+        response.put("status", HttpStatus.CONFLICT);
         response.put("error", "Category Already Exists");
 
         return new ResponseEntity<>(response,HttpStatus.CONFLICT);
@@ -56,10 +54,10 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", ex.getMessage());
-        response.put("status", HttpStatus.NOT_FOUND.value());
-        response.put("error", "Category does not Exists");
+        response.put("status", HttpStatus.NOT_FOUND);
+        response.put("error", "Category not found");
 
-        return new ResponseEntity<>(response,HttpStatus.CONFLICT);
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
 
 }
