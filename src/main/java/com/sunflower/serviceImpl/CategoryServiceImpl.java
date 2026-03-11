@@ -1,8 +1,8 @@
 package com.sunflower.serviceImpl;
 
+import com.sunflower.exception.ResourceNotFoundException;
 import com.sunflower.requestDTO.CategoryRequest;
 import com.sunflower.responseDTO.CategoryResponse;
-import com.sunflower.exception.CategoryNotFoundException;
 import com.sunflower.exception.NameAlreadyExistsException;
 import com.sunflower.model.Category;
 import com.sunflower.repository.CategoryRepository;
@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository
                 .findByCategoryName(categoryName)
                 .orElseThrow(() ->
-                        new CategoryNotFoundException("Category not found with name: " + categoryName)
+                        new ResourceNotFoundException("Category not found with name: " + categoryName)
                 );
         return modelMapper.map(category, CategoryResponse.class);
     }
@@ -49,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository
                 .findById(categoryId)
                 .orElseThrow(() ->
-                        new CategoryNotFoundException("Category not found with id: " + categoryId)
+                        new ResourceNotFoundException("Category not found with id: " + categoryId)
                 );
         return modelMapper.map(category, CategoryResponse.class);
     }
@@ -61,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
                 categoryRepository.findByCategoryNameContainingIgnoreCase(keyword);
 
         if (categories.isEmpty()) {
-            throw new CategoryNotFoundException("No category found with keyword: " + keyword);
+            throw new ResourceNotFoundException("No category found with keyword: " + keyword);
         }
 
         return categories.stream()
@@ -89,7 +89,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
-            throw new CategoryNotFoundException("Category not found with id: " + categoryId);
+            throw new ResourceNotFoundException("Category not found with id: " + categoryId);
         }
         categoryRepository.deleteById(categoryId);
     }
@@ -99,7 +99,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse updateCategory(Long categoryId, CategoryRequest categoryRequest) {
         Category existingCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() ->
-                        new CategoryNotFoundException("Category not found with id: " + categoryId));
+                        new ResourceNotFoundException("Category not found with id: " + categoryId));
 
         // Check if new name already exists (and it's not the current category)
         if (!existingCategory.getCategoryName().equals(categoryRequest.getCategoryName()) &&

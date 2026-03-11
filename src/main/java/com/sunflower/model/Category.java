@@ -2,6 +2,8 @@ package com.sunflower.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,4 +17,8 @@ public class Category {
 
     @Column(name = "category_name", nullable = false, unique = true)
     private String categoryName;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
+
 }
