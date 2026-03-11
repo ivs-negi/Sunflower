@@ -48,14 +48,14 @@ public class GlobalExceptionHandler {
     }
 
     // handle category not created
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleCategoryNotFoundException(CategoryNotFoundException ex){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(ResourceNotFoundException ex){
 
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", ex.getMessage());
         response.put("status", HttpStatus.NOT_FOUND);
-        response.put("error", "Category not found");
+        response.put("error", "Resource not found");
 
         return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
