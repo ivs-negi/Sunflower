@@ -1,6 +1,7 @@
 package com.sunflower.serviceImpl;
 
-import com.sunflower.dto.CategoryDTO;
+import com.sunflower.dto.CategoryRequest;
+import com.sunflower.dto.CategoryResponse;
 import com.sunflower.exception.CategoryNotFoundException;
 import com.sunflower.exception.NameAlreadyExistsException;
 import com.sunflower.model.Category;
@@ -21,36 +22,41 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ModelMapper modelMapper;
 
-
     // get all categories
     @Override
-    public List<CategoryDTO> getAllCategory() {
-
+    public List<CategoryResponse> getAllCategory() {
         List<Category> categories = categoryRepository.findAll();
 
-        return categories
-                .stream()
-                .map(category -> modelMapper.map(category, CategoryDTO.class))
+        return categories.stream()
+                .map(category -> modelMapper.map(category, CategoryResponse.class))
                 .toList();
     }
 
     // get category by name
     @Override
-    public CategoryDTO getCategoryByName(String categoryName) {
-
+    public CategoryResponse getCategoryByName(String categoryName) {
         Category category = categoryRepository
                 .findByCategoryName(categoryName)
                 .orElseThrow(() ->
                         new CategoryNotFoundException("Category not found with name: " + categoryName)
                 );
+        return modelMapper.map(category, CategoryResponse.class);
+    }
 
-        return modelMapper.map(category, CategoryDTO.class);
+    // get category by id
+    @Override
+    public CategoryResponse getCategoryById(Long categoryId) {
+        Category category = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(() ->
+                        new CategoryNotFoundException("Category not found with id: " + categoryId)
+                );
+        return modelMapper.map(category, CategoryResponse.class);
     }
 
     // get category by keyword
     @Override
-    public List<CategoryDTO> searchCategoryByKeyword(String keyword) {
-
+    public List<CategoryResponse> searchCategoryByKeyword(String keyword) {
         List<Category> categories =
                 categoryRepository.findByCategoryNameContainingIgnoreCase(keyword);
 
@@ -58,57 +64,57 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNotFoundException("No category found with keyword: " + keyword);
         }
 
-        return categories
-                .stream()
-                .map(category -> modelMapper.map(category, CategoryDTO.class))
+        return categories.stream()
+                .map(category -> modelMapper.map(category, CategoryResponse.class))
                 .toList();
     }
 
-    // saving category
+    // saving category - now accepts CategoryRequest, returns CategoryResponse
     @Override
-    public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
-
-        // checking if category already exist
-        if (categoryRepository.existsByCategoryName(categoryDTO.getCategoryName())){
-            throw new NameAlreadyExistsException(categoryDTO.getCategoryName()+" name already exist.");
+    public CategoryResponse saveCategory(CategoryRequest categoryRequest) {
+        // checking if category already exists
+        if (categoryRepository.existsByCategoryName(categoryRequest.getCategoryName())) {
+            throw new NameAlreadyExistsException(categoryRequest.getCategoryName() + " name already exists.");
         }
 
-        Category category = modelMapper.map(categoryDTO, Category.class);
-
+        // Convert Request to Entity
+        Category category = modelMapper.map(categoryRequest, Category.class);
         Category savedCategory = categoryRepository.save(category);
 
-        return modelMapper.map(savedCategory, CategoryDTO.class);
+        // Convert Entity to Response
+        return modelMapper.map(savedCategory, CategoryResponse.class);
     }
 
-   // delete category
-   @Override
-   public void deleteCategory(Long categoryId) {
-
-       Category category = categoryRepository.findById(categoryId)
-               .orElseThrow(() ->
-                       new CategoryNotFoundException("Category not found with id: " + categoryId));
-
-       categoryRepository.delete(category);
-   }
-
-   // update category
+    // delete category
     @Override
-    public CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO) {
+    public void deleteCategory(Long categoryId) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new CategoryNotFoundException("Category not found with id: " + categoryId);
+        }
+        categoryRepository.deleteById(categoryId);
+    }
 
+    // update category - now accepts CategoryRequest, returns CategoryResponse
+    @Override
+    public CategoryResponse updateCategory(Long categoryId, CategoryRequest categoryRequest) {
         Category existingCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() ->
-                        new CategoryNotFoundException(
-                                "Category not found with id: " + categoryId
-                        ));
+                        new CategoryNotFoundException("Category not found with id: " + categoryId));
 
-        // update fields
-        existingCategory.setCategoryName(categoryDTO.getCategoryName());
+        // Check if new name already exists (and it's not the current category)
+        if (!existingCategory.getCategoryName().equals(categoryRequest.getCategoryName()) &&
+                categoryRepository.existsByCategoryName(categoryRequest.getCategoryName())) {
+            throw new NameAlreadyExistsException(
+                    categoryRequest.getCategoryName() + " name already exists with another category."
+            );
+        }
+
+        // Update fields from Request
+        existingCategory.setCategoryName(categoryRequest.getCategoryName());
 
         Category savedCategory = categoryRepository.save(existingCategory);
 
-        return modelMapper.map(savedCategory, CategoryDTO.class);
+        // Return Response DTO
+        return modelMapper.map(savedCategory, CategoryResponse.class);
     }
-
-
 }
-

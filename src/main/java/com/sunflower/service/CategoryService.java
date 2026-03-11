@@ -1,22 +1,19 @@
 package com.sunflower.service;
 
-import com.sunflower.dto.CategoryDTO;
-import org.springframework.stereotype.Component;
-
+import com.sunflower.dto.CategoryRequest;
+import com.sunflower.dto.CategoryResponse;
 import java.util.List;
 
-@Component
 public interface CategoryService {
 
-    List<CategoryDTO> getAllCategory();
+    // User endpoints
+    List<CategoryResponse> getAllCategory();
+    CategoryResponse getCategoryByName(String categoryName);
+    CategoryResponse getCategoryById(Long categoryId);
+    List<CategoryResponse> searchCategoryByKeyword(String keyword);
 
-    CategoryDTO saveCategory(CategoryDTO categoryDTO);
-
+    // Admin endpoints
+    CategoryResponse saveCategory(CategoryRequest categoryRequest);
+    CategoryResponse updateCategory(Long categoryId, CategoryRequest categoryRequest);
     void deleteCategory(Long categoryId);
-
-    CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO);
-
-    CategoryDTO getCategoryByName(String categoryName);
-
-    List<CategoryDTO> searchCategoryByKeyword(String keyword);
 }
